@@ -1,0 +1,21 @@
+<form method="POST" class="form-signin" th:object="${userForm}" th:action="@{/users/create}">
+    <h2 class="form-signin-heading">Create your account</h2>
+    <div class="form-group">
+        <input required type="text" th:field="*{fullname}" class="form-control" placeholder="Fullname"
+               autofocus="true">
+        <span class="has-error" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></span>
+    </div>
+
+    <div class="form-group">
+        <input required type="email" th:field="*{email}" class="form-control" placeholder="Email"
+               autofocus="true">
+        <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+    </div>
+
+    <div class="form-group">
+        <input required type="password" th:field="*{password}" class="form-control" placeholder="Password">
+        <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+</form>
