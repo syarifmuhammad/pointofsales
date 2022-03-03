@@ -1,4 +1,4 @@
-package com.haimp02.pointofsales.entity;
+package com.haimp02.pointofsales.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,13 +14,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String fullname;
 
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String password;
 
     public Long getId() {
