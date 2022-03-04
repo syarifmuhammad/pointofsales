@@ -1,0 +1,68 @@
+<!-- <form method="POST" class="form-signin" th:object="${userForm}" th:action="@{/users/create}">
+    <h2 class="form-signin-heading">Create your account</h2>
+    <div class="form-group">
+        <input required type="text" th:field="*{fullname}" class="form-control" placeholder="Fullname" autofocus="true">
+        <span class="has-error" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></span>
+    </div>
+
+    <div class="form-group">
+        <input required type="email" th:field="*{email}" class="form-control" placeholder="Email" autofocus="true">
+        <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+    </div>
+
+    <div class="form-group">
+        <input required type="password" th:field="*{password}" class="form-control" placeholder="Password">
+        <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+</form> -->
+<th:block th:include="fragments/header"></th:block>
+<div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                        </div>
+                        <form class="user" method="post" th:object="${userForm}" th:action="@{/register}">
+                            <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
+                            <div class="form-group">
+                                <input required type="text" th:field="*{fullname}"
+                                    class="form-control form-control-user" placeholder="Fullname" autofocus="true">
+                                <span class="d-block has-error text-danger my-1 ml-3" th:if="${#fields.hasErrors('fullname')}"
+                                    th:errors="*{fullname}"></span>
+                            </div>
+                            <div class="form-group">
+                                <input required type="email" th:field="*{email}" class="form-control form-control-user"
+                                    placeholder="Email" autofocus="true">
+                                <span class="d-block has-error text-danger my-1 ml-3" th:if="${#fields.hasErrors('email')}"
+                                    th:errors="*{email}"></span>
+                            </div>
+                            <div class="form-group">
+                                <input required type="password" th:field="*{password}" class="form-control form-control-user"
+                                    placeholder="Password">
+                                <span class="d-block has-error text-danger my-1 ml-3" th:if="${#fields.hasErrors('password')}"
+                                    th:errors="*{password}"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-user btn-block">
+                                Register Account
+                            </button>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <a class="small" href="/login">Already have an account? Login!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="fragments/footer"></th:block>
