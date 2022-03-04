@@ -41,6 +41,31 @@ public class UserController {
         return "login";
     }
 
+    @GetMapping("/register")
+    public String register(Model model) {
+        if (securityService.isAuthenticated()) {
+            return "redirect:/";
+        }
+        model.addAttribute("userForm", new User());
+
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+        if (securityService.isAuthenticated()) {
+            return "redirect:/";
+        }
+        userValidator.validate(userForm, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "register";
+        }
+        userService.save(userForm);
+        // securityService.autoLogin(userForm.getEmail(), userForm.getPassword());
+        return "redirect:/";
+    }
+
 
     // Route untuk direct ke halaman
 
