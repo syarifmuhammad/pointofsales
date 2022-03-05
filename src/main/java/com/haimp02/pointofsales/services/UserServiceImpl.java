@@ -1,12 +1,15 @@
 package com.haimp02.pointofsales.services;
 
-import java.util.List;
+import java.util.Optional;
 
 import com.haimp02.pointofsales.models.entities.User;
 import com.haimp02.pointofsales.models.repositories.UserRepository;
 import com.haimp02.pointofsales.services.interfaces.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +21,28 @@ public class UserServiceImpl implements UserService{
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public List<User> findAll() {     
-        return userRepository.findAll();
+    public Page<User> findAll(Integer page) {  
+        Pageable pagination = PageRequest.of(page, 12);   
+        return userRepository.findAll(pagination);
+    }
+
+    @Override
+    public User findById(Long id) {
+        Optional<User> getUser = userRepository.findById(id);
+        if (getUser.isPresent()) {
+            return getUser.get();
+        }
+        return null;
     }
 
     @Override
     public void save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if (user.getPassword().isBlank()) {
+            User getUser = this.findById(user.getId());
+            user.setPassword(getUser.getPassword());
+        } else {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
         userRepository.save(user);
     }
 
@@ -32,4 +50,14 @@ public class UserServiceImpl implements UserService{
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public void update(User user) {
+        Optional<User> updateUser = userRepository.findById(user.getId());
+        if (!updateUser.isEmpty()) {
+            userRepository.save(updateUser.get());
+        }
+    }
+
+    
 }
