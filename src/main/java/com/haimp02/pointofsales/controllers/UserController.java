@@ -5,17 +5,23 @@ import com.haimp02.pointofsales.services.interfaces.SecurityService;
 import com.haimp02.pointofsales.services.interfaces.UserService;
 import com.haimp02.pointofsales.validators.UserValidator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
+
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -32,12 +38,12 @@ public class UserController {
             return "redirect:/";
         }
 
-        if (error != null)
+        if (error != null) {
             model.addAttribute("error", "Your email and password is invalid.");
-
-        if (logout != null)
+        }
+        if (logout != null) {
             model.addAttribute("message", "You have been logged out successfully.");
-
+        }
         return "login";
     }
 
@@ -52,7 +58,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+    public String register(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         if (securityService.isAuthenticated()) {
             return "redirect:/";
         }
@@ -62,32 +68,47 @@ public class UserController {
             return "register";
         }
         userService.save(userForm);
-        // securityService.autoLogin(userForm.getEmail(), userForm.getPassword());
-        return "redirect:/";
+        model.addAttribute("success", true);
+        return "register";
     }
 
 
     // Route untuk direct ke halaman
 
     @GetMapping("/users")
-    public String index(Model model) {
-        model.addAttribute("users", userService.findAll());
+    public String index(Model model, @RequestParam(required=false) Integer page) {
+        if (page == null || page<1) {
+            page = 1;
+        }
+        page--;
+        model.addAttribute("users", userService.findAll(page));
 
         return "users/index";
     }
 
     @GetMapping("/users/create")
-    public String create(Model model) {
+    public String create (Model model) {
         model.addAttribute("userForm", new User());
 
         return "users/create";
+    }
+
+    @GetMapping("/users/update/{id}")
+    public String update (@PathVariable("id") Long id, Model model) {
+        User getUser = userService.findById(id);
+        if (getUser == null) {
+            return "redirect:/users";
+        }
+        model.addAttribute("userForm", getUser);
+
+        return "users/update";
     }
 
 
     //route method post 
 
     @PostMapping("/users/create")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+    public String createAction(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -95,5 +116,16 @@ public class UserController {
         }
         userService.save(userForm);
         return "redirect:/";
+    }
+
+    @PostMapping("/users/update/{id}")
+    public String updateAction(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+        userValidator.validate(userForm, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "users/update";
+        }
+        userService.save(userForm);
+        return "redirect:/users";
     }
 }
