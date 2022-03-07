@@ -1,5 +1,8 @@
 package com.haimp02.pointofsales.services;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.haimp02.pointofsales.models.entities.Product;
 import com.haimp02.pointofsales.models.repositories.ProductRepository;
 import com.haimp02.pointofsales.services.interfaces.ProductService;
@@ -24,7 +27,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
+        Optional<Product> getProduct = productRepository.findById(id);
+        if (getProduct.isPresent()) {
+            return getProduct.get();
+        }
         return null;
+    }
+
+    @Override
+    public List<Product> findByNameContaining(String search) {
+        List<Product> products = productRepository.findByNameContaining(search);
+        return products;
     }
 
     @Override

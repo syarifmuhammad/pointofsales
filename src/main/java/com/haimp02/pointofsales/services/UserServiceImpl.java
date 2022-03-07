@@ -17,13 +17,14 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
+    
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public Page<User> findAll(Integer page) {  
-        Pageable pagination = PageRequest.of(page, 12);   
-        return userRepository.findAll(pagination);
+    public Page<User> findAll(Integer page, String search) {  
+        Pageable pagination = PageRequest.of(page, 10);
+        return userRepository.findByFullnameContaining(search, pagination);
     }
 
     @Override
@@ -58,6 +59,18 @@ public class UserServiceImpl implements UserService{
             userRepository.save(updateUser.get());
         }
     }
+
+    @Override
+    public Boolean isExistsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    
 
     
 }
