@@ -8,6 +8,7 @@ import com.haimp02.pointofsales.validators.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -76,12 +77,20 @@ public class UserController {
     // Route untuk direct ke halaman
 
     @GetMapping("/users")
-    public String index(Model model, @RequestParam(required=false) Integer page) {
+    public String index(Model model, @RequestParam(required=false) Integer page, @RequestParam(required=false) String search) {
         if (page == null || page<1) {
             page = 1;
         }
         page--;
-        model.addAttribute("users", userService.findAll(page));
+        if (search == null) {
+            search = "";
+        } else {
+            model.addAttribute("search", search);
+        }
+        Page<User> users = userService.findAll(page, search);
+        model.addAttribute("users", users);
+        model.addAttribute("page", page);
+        model.addAttribute("element", users.getContent().size());
 
         return "users/index";
     }
@@ -115,7 +124,7 @@ public class UserController {
             return "users/create";
         }
         userService.save(userForm);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
     @PostMapping("/users/update/{id}")
@@ -127,5 +136,15 @@ public class UserController {
         }
         userService.save(userForm);
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/delete/{id}")
+    public String deleteAction(@PathVariable("id") Long id) {
+        if (userService.isExistsById(id)) {
+            userService.deleteById(id);
+            return "redirect:/users?delete=success";
+        }else {
+            return "redirect:/users?delete=error";
+        }
     }
 }
