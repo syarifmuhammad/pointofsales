@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::section}, ~{::css}, ~{::js})}">
+
+<head>
+    <title>Halaman Tambah Transaksi</title>
+    <th:block th:fragment="css">
+    </th:block>
+</head>
+
+<body>
+    <section>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Tambah Transaksi</h6>
+            </div>
+            <div class="card-body row">
+                <div class="col-lg-5">
+                    <h2>Cari Barang</h2>
+                    <div class="d-flex">
+                        <input id="search" type="text" name="search" class="form-control"
+                            placeholder="Cari barang ...">
+                    </div>
+                </div>
+                <form class="col-lg-7" action="#" th:action="@{/transactions/create}" th:object="${transaction}" method="POST">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h2>Detail Transaksi</h2>
+                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
+                                role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Barang</th>
+                                        <th>Qty</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-search">
+                                    <tr th:each="td, iter : ${transaction.transaction_details}">
+                                        <input type="hidden"
+                                            th:field="*{transaction_details[__${iter.index}__].product}">
+                                        <td th:text="${td.product.name}" />
+                                        <td>
+                                            <input type="number"
+                                                th:field="*{transaction_details[__${iter.index}__].quantity}"
+                                                class="form-control">
+                                        </td>
+                                        <td th:text="${td.quantity * td.product.selling_price}" />
+                                        <!-- <td th:text="${product.selling_price}" /> -->
+                                        <td>
+                                            <button type="submit" name="removeTransactionDetails"
+                                                class="btn btn-danger btn-circle">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                        <!-- <td th:text="${user.email}" /> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Tambah Transaksi</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <th:block th:fragment="js">
+        <script>
+
+            $(document).ready(function ($) {
+
+                // $('.listSearch li').each(function () {
+                //     $(this).attr('searchData', $(this).text().toLowerCase());
+                // });
+                $('#search').on('keyup', function () {
+                    var dataList = $(this).val().toLowerCase();
+                    $.ajax({
+                        type: 'GET',
+                        dataType: "json",
+                        url: '/products/search?search=' + dataList,
+                        success: function (data, status, xhr) {
+                            console.log('data: ', data);
+                        }
+                    });
+                    // $('.listSearch li').each(function () {
+                    //     if ($(this).filter('[searchData *= ' + dataList + ']').length > 0 || dataList.length < 1) {
+                    //         $(this).show();
+                    //     } else {
+                    //         $(this).hide();
+                    //     }
+                    // });
+                });
+
+            });
+
+        </script>
+    </th:block>
+</body>
+
+</html>

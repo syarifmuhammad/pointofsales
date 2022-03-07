@@ -1,32 +1,46 @@
-<th:block th:include="fragments/header"></th:block>
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::section}, ~{::css}, ~{::js})}">
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <h6 class="m-0 font-weight-bold text-primary">Tambah User</h6>
-    </div>
-    <div class="card-body">
-        <form autocomplete="off" method="POST" th:object="${userForm}" th:action="@{/users/create}">
-            <div class="form-group">
-                <input required type="text" th:field="*{fullname}" class="form-control" placeholder="Fullname">
-                <span class="has-error" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></span>
+<head>
+    <title>Halaman Tambah User</title>
+    <th:block th:fragment="css">
+    </th:block>
+</head>
+
+<body>
+    <section>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Tambah User</h6>
             </div>
-            <input id="email" style="display:none" type="email" name="fakeusernameremembered">
-            <input id="password" style="display:none" type="password" name="fakepasswordremembered">
+            <div class="card-body">
+                <form autocomplete="off" method="POST" th:object="${userForm}" th:action="@{/users/create}">
+                    <div class="form-group">
+                        <input required type="text" th:field="*{fullname}" class="form-control" placeholder="Fullname">
+                        <span class="has-error" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></span>
+                    </div>
+                    <input id="email" style="display:none" type="email" name="fakeusernameremembered">
+                    <input id="password" style="display:none" type="password" name="fakepasswordremembered">
 
-            <div class="form-group">
-                <input required type="email" th:field="*{email}" class="form-control" placeholder="Email"
-                    autocomplete="nope">
-                <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    <div class="form-group">
+                        <input required type="email" th:field="*{email}" class="form-control" placeholder="Email"
+                            autocomplete="nope">
+                        <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input required type="password" th:field="*{password}" class="form-control"
+                            placeholder="Password" autocomplete="new-password">
+                        <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                    </div>
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Tambah Akun Baru</button>
+                </form>
             </div>
+        </div>
+    </section>
+    <th:block th:fragment="js">
+    </th:block>
+</body>
 
-            <div class="form-group">
-                <input required type="password" th:field="*{password}" class="form-control" placeholder="Password"
-                    autocomplete="new-password">
-                <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-            </div>
-
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Tambah Akun Baru</button>
-        </form>
-    </div>
-</div>
-<th:block th:include="fragments/footer"></th:block>
+</html>

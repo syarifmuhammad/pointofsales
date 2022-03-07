@@ -1,90 +1,127 @@
-<th:block th:include="fragments/header"></th:block>
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::section}, ~{::css}, ~{::js})}">
 
-<h1 class="h3 mb-2 text-gray-800">Halaman Manage Data User</h1>
-<div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <h6 class="m-0 font-weight-bold text-primary">Data User</h6>
-        <a th:href="@{/users/create}" class="btn btn-primary btn-icon-split">
-            <span class="icon text-white-50">
-                <i class="fas fa-plus"></i>
-            </span>
-            <span class="text">Tambah User</span>
-        </a>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        <form>
-                            <label>Search:
-                                <input type="search" class="form-control form-control-sm" placeholder="Cari dengan nama user" aria-controls="dataTable">
-                            </label>
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
-                            role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-                            <thead>
-                                <tr role="row">
-                                    <th>No</th>
-                                    <th>Full Name</th>
-                                    <th>Email</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="user, iter : ${users.content}">
-                                    <td th:text="${iter.index+1}" />
-                                    <td th:text="${user.fullname}" />
-                                    <td th:text="${user.email}" />
-                                    <td>
-                                        <a th:href="@{/users/update/}+${user.id}" class="btn btn-info btn-circle">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-danger btn-circle">
+<head>
+    <title>Halaman User</title>
+    <th:block th:fragment="css">
+    </th:block>
+</head>
+
+<body>
+    <section>
+        <h1 class="h3 mb-2 text-gray-800">Halaman Manage Data User</h1>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Data User</h6>
+                <a th:href="@{/users/create}" class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Tambah User</span>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <form method="GET" th:action="@{/users}">
+                                    <label>Search:
+                                        <input type="search" th:value="${search}" name="search"
+                                            class="form-control form-control-sm" placeholder="Cari dengan nama user"
+                                            aria-controls="dataTable">
+                                    </label>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered dataTable" id="dataTable" width="100%"
+                                    cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>No</th>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="user, iter : ${users.content}">
+                                            <td th:text="${(10 * page) + iter.index + 1}" />
+                                            <td th:text="${user.fullname}" />
+                                            <td th:text="${user.email}" />
+                                            <td>
+                                                <a th:href="@{/users/update/}+${user.id}"
+                                                    class="btn btn-info btn-circle">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <!-- <span th:href="@{/users/delete/}+${user.id}" class="btn btn-danger btn-circle">
                                             <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-5">
-                        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing 1 to
-                            10 of 57 entries</div>
-                    </div>
-                    <div class="col-sm-12 col-md-7">
-                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
-                            <ul class="pagination">
-                                <li class="paginate_button page-item previous disabled" id="dataTable_previous"><a
-                                        href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0"
-                                        class="page-link">Previous</a></li>
-                                <li class="paginate_button page-item active"><a href="#" aria-controls="dataTable"
-                                        data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="dataTable"
-                                        data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="dataTable"
-                                        data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="dataTable"
-                                        data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="dataTable"
-                                        data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-                                <li class="paginate_button page-item "><a href="#" aria-controls="dataTable"
-                                        data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
-                                <li class="paginate_button page-item next" id="dataTable_next"><a href="#"
-                                        aria-controls="dataTable" data-dt-idx="7" tabindex="0"
-                                        class="page-link">Next</a></li>
-                            </ul>
+                                        </span> -->
+                                                <span th:onclick="|deleteUser('${user.id}')|"
+                                                    class="btn btn-danger btn-circle">
+                                                    <i class="fas fa-trash"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-5">
+                                <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                                    Showing <span
+                                        th:text="${page * 10 + 1} + ' to ' + (${page * 10} + ${element}) + ' of ' +${users.totalElements}"></span>
+                                    entries</div>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button page-item previous"
+                                            th:classappend="${page}==0 ? disabled" id="dataTable_previous">
+                                            <a th:href="@{/users} + '?page=' + ${page}" class="page-link">Previous
+                                            </a>
+                                        </li>
+                                        <li th:each="index : ${#numbers.sequence(1, users.totalPages)}"
+                                            class="paginate_button page-item"
+                                            th:classappend="${page+1}==${index} ? active ">
+                                            <a th:if="${page+1}!=${index}"
+                                                th:href="@{/users} + '?page=' + ${index} + (${search} != '' ? '&search=' + ${search} : '')"
+                                                class="page-link">
+                                                <th:block th:text="${index}"></th:block>
+                                            </a>
+                                            <a th:if="${page+1}==${index}" class="page-link">
+                                                <th:block th:text="${index}"></th:block>
+                                            </a>
+                                        </li>
+                                        <li class="paginate_button page-item next"
+                                            th:classappend="${page+1}==${users.totalPages} ? disabled"
+                                            id="dataTable_next">
+                                            <a th:href="@{/users} + '?page=' + ${page+2}" class="page-link">Next
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<th:block th:include="fragments/footer"></th:block>
+    </section>
+    <th:block th:fragment="js">
+        <script>
+            function deleteUser(id) {
+                let yes = confirm("Anda yakin untuk menghapus user ini");
+                if (yes) {
+                    window.location.href = "/users/delete/" + id;
+                }
+        
+            }
+        </script>
+    </th:block>
+</body>
+
+</html>
