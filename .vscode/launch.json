@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PointofsalesApplication<pointofsales>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.haimp02.pointofsales.PointofsalesApplication",
+            "projectName": "pointofsales",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
