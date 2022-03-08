@@ -21,6 +21,9 @@ public class Product {
     private String name;
 
     @Column(nullable = false)
+    private Integer stock;
+
+    @Column(nullable = false)
     private Double purchase_price;
 
     @Column(nullable = false)
@@ -44,6 +47,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setstock(Integer stock) {
+        this.stock = stock;
     }
 
     public Double getPurchase_price() {
