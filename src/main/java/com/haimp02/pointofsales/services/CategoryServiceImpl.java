@@ -1,9 +1,6 @@
 package com.haimp02.pointofsales.services;
 
-import java.util.List;
-
 import com.haimp02.pointofsales.models.entities.Category;
-import com.haimp02.pointofsales.models.entities.Product;
 import com.haimp02.pointofsales.models.repositories.CategoryRepository;
 import com.haimp02.pointofsales.services.interfaces.CategoryService;
 
@@ -18,17 +15,10 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Autowired
     private CategoryRepository categoryRepository;
-    
-    // @Override
-    // public List<Product> findAll() {
-    //     // TODO Auto-generated method stub
-    //     return null;
-    // }
 
     @Override
     public void save(Category category) {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
