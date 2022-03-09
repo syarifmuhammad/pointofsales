@@ -52,7 +52,7 @@
                                                 <a th:href="@{/categories/update/}+${category.id}" class="btn btn-info btn-circle">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <span th:onclick="|deleteProduct('${category.id}')|" class="btn btn-danger btn-circle">
+                                                <span th:onclick="|deleteCategory('${category.id}')|" class="btn btn-danger btn-circle">
                                                     <i class="fas fa-trash"></i>
                                                 </span>
                                             </td>
@@ -69,6 +69,15 @@
         </div>
     </section>
     <th:block th:fragment="js">
+        <script>
+            function deleteCategory(id) {
+                let yes = confirm("Anda yakin untuk menghapus category ini");
+                if (yes) {
+                    window.location.href = "/categories/delete/" + id;
+                }
+        
+            }
+        </script>
     </th:block>
 </body>
 

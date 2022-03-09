@@ -8,4 +8,6 @@ public interface CategoryService {
     Page<Category> findAll(Integer page);
     void save(Category category);
     Category findById(Long id);
+    Boolean isExistsById(Long id);
+    void deleteById(Long id);
 }

@@ -38,4 +38,13 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryRepository.findAll(pagination);
     }
     
+    @Override
+    public Boolean isExistsById(Long id) {
+        return categoryRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        categoryRepository.deleteById(id);
+    }
 }

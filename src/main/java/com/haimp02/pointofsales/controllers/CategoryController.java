@@ -68,4 +68,14 @@ public class CategoryController {
         categoryService.save(categoryForm);
         return "redirect:/categories";
     }
+
+    @GetMapping("/categories/delete/{id}")
+    public String deleteAction(@PathVariable("id") Long id) {
+        if (categoryService.isExistsById(id)) {
+            categoryService.deleteById(id);
+            return "redirect:/categories?delete=success";
+        }else {
+            return "redirect:/categories?delete=error";
+        }
+    }
 }
