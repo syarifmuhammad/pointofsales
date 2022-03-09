@@ -1,5 +1,7 @@
 package com.haimp02.pointofsales.services;
 
+import java.util.Optional;
+
 import com.haimp02.pointofsales.models.entities.Category;
 import com.haimp02.pointofsales.models.repositories.CategoryRepository;
 import com.haimp02.pointofsales.services.interfaces.CategoryService;
@@ -17,14 +19,23 @@ public class CategoryServiceImpl implements CategoryService{
     private CategoryRepository categoryRepository;
 
     @Override
-    public void save(Category category) {
-        // TODO Auto-generated method stub
+    public Category findById(Long id) {
+        Optional<Category> getCategory = categoryRepository.findById(id);
+        if (getCategory.isPresent()) {
+            return getCategory.get();
+        }
+        return null;
     }
 
     @Override
-    public Page<Category> findAll(Integer page, String search) {
+    public void save(Category category) { 
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public Page<Category> findAll(Integer page) {
         Pageable pagination = PageRequest.of(page, 10);
-        return categoryRepository.findByName(search, pagination);
+        return categoryRepository.findAll(pagination);
     }
     
 }
