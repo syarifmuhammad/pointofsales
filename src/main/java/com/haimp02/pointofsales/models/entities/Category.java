@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -39,6 +41,7 @@ public class Category {
         this.name = name;
     }
 
+    @JsonBackReference
     public List<Product> getProducts() {
         return products;
     }

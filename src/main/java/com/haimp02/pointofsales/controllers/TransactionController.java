@@ -1,13 +1,6 @@
 package com.haimp02.pointofsales.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.haimp02.pointofsales.models.entities.Product;
 import com.haimp02.pointofsales.models.entities.Transaction;
-import com.haimp02.pointofsales.models.entities.TransactionDetail;
 import com.haimp02.pointofsales.services.interfaces.ProductService;
 import com.haimp02.pointofsales.services.interfaces.TransactionService;
 
@@ -15,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Date;
 
 @Controller
 public class TransactionController {
@@ -48,37 +43,43 @@ public class TransactionController {
         return "transactions/index";
     }
 
-    @RequestMapping({ "/transactions/create" })
+    @GetMapping({ "/transactions/create" })
     public String showTransactionCreate(Model model) {
         Transaction newTransaction = new Transaction();
         model.addAttribute("transaction", newTransaction);
-        model.addAttribute("products", new ArrayList<Product>());
         return "transactions/create";
     }
 
-    @RequestMapping(value = "/transactions/create", params = { "cari" })
-    public String searchProduct(final Transaction transaction, Model model, final BindingResult bindingResult,
-            final HttpServletRequest req) {
-        if (req.getParameter("search") == null || req.getParameter("search").isBlank()) {
-            model.addAttribute("products", new ArrayList<Product>());
-        } else {
-            List<Product> products = productionService.findByNameContaining(req.getParameter("search"));
-            model.addAttribute("products", products);
-        }
-        return "transactions/create";
+    @PostMapping({ "/transactions/create" })
+    public String createAction(Transaction transaction) {
+        Transaction newTransaction = transaction;
+        transaction.setTransaction_date(new Date());
+        transactionService.save(newTransaction);
+        Long id = newTransaction.getId();
+
+        return "redirect:/transactions";
     }
 
-    @RequestMapping(value = "/transactions/create", params = { "addTransactionDetails" })
-    public String addTransactionDetails(final Transaction transaction, Model model, final BindingResult bindingResult,
-            final HttpServletRequest req) {
-        TransactionDetail newTransactionDetail = new TransactionDetail();
-        newTransactionDetail.setProduct(productionService.findById(Long.parseLong(req.getParameter("addTransactionDetails"))));
-        newTransactionDetail.setQuantity(1);
-        if (transaction.getTransaction_details() == null) {
-            transaction.setTransaction_details(new ArrayList<TransactionDetail>());
+    @GetMapping({ "/transactions/update/{id}" })
+    public String update(@PathVariable("id") Long id, Model model) {
+        Transaction getTransaction = transactionService.findById(id);
+        if (getTransaction == null) {
+            return "redirect:/transactions";
         }
-        transaction.getTransaction_details().add(newTransactionDetail);
-        model.addAttribute("transaction", transaction);
-        return "transactions/create";
+        model.addAttribute("transaction", getTransaction);
+        model.addAttribute("transaction_details", getTransaction.getTransaction_details());
+
+        return "transactions/update";
+    }
+
+    @PostMapping({ "/transactions/update/{id}" })
+    public String updateAction(Transaction transaction) {
+        Transaction editTransaction = transactionService.findById(transaction.getId());
+        if (editTransaction == null) {
+            return "redirect:/transactions";
+        }
+        transactionService.update(transaction);
+
+        return "redirect:/transactions";
     }
 }

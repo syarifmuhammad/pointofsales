@@ -1,5 +1,8 @@
 package com.haimp02.pointofsales.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class Transaction {
     
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @JsonBackReference
     private Customer customer;
 
     @OneToMany(mappedBy = "transaction")
@@ -62,6 +66,11 @@ public class Transaction {
 
     public void setTransaction_details(List<TransactionDetail> transaction_details) {
         this.transaction_details = transaction_details;
+    }
+
+    public String getTransactionNumber() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMYYYY");
+        return "TRX/" + simpleDateFormat.format(this.transaction_date) + "/" + String.format("%03d", this.id);
     }
 
     

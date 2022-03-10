@@ -10,6 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.text.DecimalFormat;
+
 @Entity
 @Table(name = "transaction_details")
 public class TransactionDetail {
@@ -22,10 +27,12 @@ public class TransactionDetail {
 
     @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JsonManagedReference
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name="transaction_id", nullable=false)
+    @JoinColumn(name="transaction_id",insertable = true, nullable=false)
+    @JsonBackReference
     private Transaction transaction;
     
     public Long getId() {
@@ -60,7 +67,10 @@ public class TransactionDetail {
         this.transaction = transaction;
     }
 
-    
+    public String getSelling_price() {
+        DecimalFormat df = new DecimalFormat("###,###,###");
+        return "Rp " + df.format(this.product.getSelling_price() * this.quantity);
+    }
 
 
     

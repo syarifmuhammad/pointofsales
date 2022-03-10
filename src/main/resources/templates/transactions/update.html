@@ -20,7 +20,7 @@
     <section>
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Tambah Transaksi</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Update Transaksi</h6>
             </div>
             <div class="card-body row">
                 <div class="col-lg-5 mt-3">
@@ -32,13 +32,15 @@
 
                     </div>
                 </div>
-                <form class="col-lg-7 mt-3" action="#" th:action="@{/transactions/create}" th:object="${transaction}"
+                <form class="col-lg-7 mt-3" action="#" th:action="@{/transactions/update/}+${transaction.id}" th:object="${transaction}"
                     method="POST">
                     <div class="row">
                         <div class="col-sm-12">
                             <h2>Detail Transaksi</h2>
                             <div class="form-group">
-                                <input required type="text" th:field="*{customer.name}" class="form-control" placeholder="Nama Customer">
+                                <input required type="hidden" th:field="*{customer.id}">
+                                <input required type="text" th:field="*{customer.name}" class="form-control"
+                                    placeholder="Nama Customer">
                             </div>
                             <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
                                 role="grid" aria-describedby="dataTable_info" style="width: 100%;">
@@ -51,23 +53,54 @@
                                     </tr>
                                 </thead>
                                 <tbody id="transaction_details">
-
+                                    <input type='hidden' th:field="*{id}">
+                                    <tr th:each="trd, iter : ${transaction.transaction_details}">
+                                        <input type='hidden'
+                                            th:field="*{transaction_details[__${iter.index}__].product.id}">
+                                        <td th:text="${trd.product.name}"></td>
+                                        <td>
+                                            <input oninput='changeQty(this)' type='number'
+                                                th:field="*{transaction_details[__${iter.index}__].quantity}"
+                                                class='form-control'>
+                                        </td>
+                                        <td class='text-success' th:text="${trd.selling_price}" />
+                                        <td>
+                                            <button type="button"  onclick="removeProduct(this)"
+                                                class='btn btn-danger btn-circle'>
+                                                <i class='fas fa-trash'></i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Tambah Transaksi</button>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Update Transaksi</button>
                 </form>
             </div>
         </div>
     </section>
     <th:block th:fragment="js">
+        <script th:inline="javascript">
+            var product_added_db = [[${transaction_details}]];
+            </script>
         <script>
-            var product = []
-            var product_added = []
             function toRupiah(x) {
                 return "Rp " + x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             }
+            if (product_added_db != null) {
+                var product_added = []
+                product_added_db.forEach(p => {
+                    let app = p.product
+                    app.quantity = p.quantity
+                    app.selling_price = app.quantity * app.selling_price
+                    app.selling_price_string = toRupiah(app.selling_price)
+                    product_added.push(app)
+                })
+            } else {
+                var product_added = []
+            }
+            var product = []
             function setLoading() {
                 var product_search_list = $("#product-search-list")
                 var loading =
@@ -92,7 +125,7 @@
                     "</td>" +
                     "<td class='text-success'>" + toRupiah(selling_price) + "</td>" +
                     "<td>" +
-                    "<button type='button' onclick='removeProduct(this)'" +
+                    "<button type='submit' name='removeTransactionDetails'" +
                     "class='btn btn-danger btn-circle'>" +
                     "<i class='fas fa-trash'></i>" +
                     "</button>" +

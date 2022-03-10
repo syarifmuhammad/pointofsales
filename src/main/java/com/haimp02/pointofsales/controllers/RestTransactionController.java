@@ -1,7 +1,7 @@
 package com.haimp02.pointofsales.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import com.haimp02.pointofsales.models.entities.Product;
 import com.haimp02.pointofsales.services.interfaces.ProductService;
 // import com.haimp02.pointofsales.services.interfaces.TransactionService;
@@ -21,6 +21,9 @@ public class RestTransactionController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/products/search")
     public List<Product> searchProduct(@RequestParam String search) {
+        if (search.isBlank()) {
+            return new ArrayList<Product>();
+        }
         return productService.findByNameContaining(search);
         // return theaterService.getMovies();
     }

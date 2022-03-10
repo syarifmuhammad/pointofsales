@@ -1,6 +1,8 @@
 package com.haimp02.pointofsales.models.entities;
 
 
+import java.text.DecimalFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "products")
@@ -28,6 +32,7 @@ public class Product {
 
     @ManyToOne()
     @JoinColumn(name="category_id")
+    @JsonManagedReference
     private Category category;
 
     public Long getId() {
@@ -56,6 +61,11 @@ public class Product {
 
     public Double getSelling_price() {
         return selling_price;
+    }
+
+    public String getSelling_price_string() {
+        DecimalFormat df = new DecimalFormat("###,###,###");
+        return "Rp " + df.format(this.selling_price);
     }
 
     public void setSelling_price(Double selling_price) {
