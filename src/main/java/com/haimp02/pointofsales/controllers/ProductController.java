@@ -14,7 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -47,9 +49,37 @@ public class ProductController {
         model.addAttribute("productForm", new Product());
         return "products/create";
     }
+
+    @PostMapping("/products/create")
+    public String createAction(@ModelAttribute("productForm") Product productForm) {
+        productService.save(productForm);
+        return "redirect:/products";
+    }
+
     @GetMapping("/products/update/{id}")
-    public String create(@PathVariable Long id ,Model model) {
-        model.addAttribute("productForm", new Product());
-        return "products/create";
+    public String update (@PathVariable("id") Long id, Model model) {
+        Product getProduct= productService.findById(id);
+        if (getProduct== null) {
+            return "redirect:/products";
+        }
+        model.addAttribute("productForm", getProduct);
+
+        return "products/update";
+    }
+
+    @PostMapping("/products/update/{id}")
+    public String updateAction(@ModelAttribute("productForm") Product productForm) {
+        productService.save(productForm);
+        return "redirect:/products";
+    }
+
+    @GetMapping("/products/delete/{id}")
+    public String deleteAction(@PathVariable("id") Long id) {
+        if (productService.isExistsById(id)) {
+            productService.deleteById(id);
+            return "redirect:/products?delete=success";
+        }else {
+            return "redirect:/products?delete=error";
+        }
     }
 }

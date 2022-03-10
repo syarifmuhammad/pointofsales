@@ -11,4 +11,7 @@ public interface ProductService {
     Product findById(Long id);
     List<Product> findByNameContaining(String search);
     void save(Product product);
+    void update(Product product);
+    Boolean isExistsById(Long id);
+    void deleteById(Long id);
 }
