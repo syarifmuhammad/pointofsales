@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: layout(~{::title}, ~{::section}, ~{::css}, ~{::js})}">
+
+<head>
+    <title>Halaman Tambah Product</title>
+    <th:block th:fragment="css">
+    </th:block>
+</head>
+
+<body>
+    <section>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Tambah Product</h6>
+            </div>
+            <div class="card-body">
+                <form autocomplete="off" method="POST" th:object="${productForm}" th:action="@{/products/create}">
+                    <div class="form-group">
+                        <input required type="text" th:field="*{name}" class="form-control" placeholder="Name">
+                        <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    </div>
+                    <div class="form-group">
+                        <input required type="num" th:field="*{purchase_price}" class="form-control" placeholder="purchase_price">
+                        <span class="has-error" th:if="${#fields.hasErrors('purchase_price')}" th:errors="*{purchase_price}"></span>
+                    </div>
+                    <div class="form-group">
+                        <input required type="num" th:field="*{selling_price}" class="form-control" placeholder="selling_price">
+                        <span class="has-error" th:if="${#fields.hasErrors('selling_price')}" th:errors="*{selling_price}"></span>
+                    </div>
+                    <div class="form-group">
+                        <input required type="num" th:field="*{stock}" class="form-control" placeholder="stock">
+                        <span class="has-error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
+                    </div>
+                    <div class="form-group">
+                        <input required type="num" th:field="*{category}" class="form-control" placeholder="category">
+                        <span class="has-error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+                    </div>
+                    <div class="form-group">
+                        <select th:field="*{category}">
+                            <!-- <option th:each="type : ${categories}" 
+                                    th:value="${type}" 
+                                    th:text="#{${'seedstarter.type.' + type}}">Wireframe</option> -->
+                                    <option value="">category</option>
+                          </select>
+                    </div>
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Tambah Product Baru</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <th:block th:fragment="js">
+    </th:block>
+</body>
+
+</html>

@@ -53,7 +53,7 @@ public class Product {
         return stock;
     }
 
-    public void setstock(Integer stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 

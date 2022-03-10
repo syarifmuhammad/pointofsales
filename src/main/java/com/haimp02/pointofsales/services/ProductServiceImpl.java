@@ -42,7 +42,28 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(Product product) {
-        
+        productRepository.save(product);
+    }
+
+    @Override
+    public void update(Product product) {
+        // TODO Auto-generated method stub
+        Optional<Product> productUpdate = productRepository.findById(product.getId());
+        if (!productUpdate.isEmpty()) {
+            productRepository.save(productUpdate.get());
+        }
+    }
+
+    @Override
+    public Boolean isExistsById(Long id) {
+        // TODO Auto-generated method stub
+        return productRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        // TODO Auto-generated method stub
+        productRepository.deleteById(id);        
     }
     
 }
