@@ -39,11 +39,11 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-    // @Override
-    // public List<Product> findByNameContaining(String search) {
-    //     List<Product> products = productRepository.findByNameContaining(search);
-    //     return products;
-    // }
+    @Override
+    public List<Product> findByNameContaining(String search) {
+        Pageable pagination = PageRequest.of(0, 10);
+        return productRepository.findByNameContaining(search, pagination).getContent();
+    }
 
     @Override
     public void save(Product product) {
