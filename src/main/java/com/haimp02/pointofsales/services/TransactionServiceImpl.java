@@ -3,7 +3,6 @@ package com.haimp02.pointofsales.services;
 import com.haimp02.pointofsales.models.entities.Customer;
 import com.haimp02.pointofsales.models.entities.Transaction;
 import com.haimp02.pointofsales.models.entities.TransactionDetail;
-import com.haimp02.pointofsales.models.entities.User;
 import com.haimp02.pointofsales.models.repositories.CustomerRepository;
 import com.haimp02.pointofsales.models.repositories.TransactionDetailRepository;
 import com.haimp02.pointofsales.models.repositories.TransactionRepository;

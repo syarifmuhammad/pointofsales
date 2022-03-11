@@ -1,9 +1,5 @@
 package com.haimp02.pointofsales.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import com.haimp02.pointofsales.models.entities.Product;
 import com.haimp02.pointofsales.services.interfaces.CategoryService;
 import com.haimp02.pointofsales.services.interfaces.ProductService;

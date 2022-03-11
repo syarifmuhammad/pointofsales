@@ -24,19 +24,20 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/categories")
-    public String index(Model model, @RequestParam(required=false) Integer page){
+    public String index(Model model, @RequestParam(required=false) Integer page, @RequestParam(required=false) String search){
         if (page == null || page<1) {
             page = 1;
         }
         page--;
-        // if (search == null) {
-        //     search = "";
-        // } else {
-        //     model.addAttribute("search", search);
-        // }
+        if (search == null) {
+            search = "";
+        } else {
+            model.addAttribute("search", search);
+        }
         Page<Category> categories = categoryService.findAll(page);
         model.addAttribute("categories", categories);
         model.addAttribute("page", page);
+        model.addAttribute("element", categories.getContent().size());
         return "categories/index";
     }
 

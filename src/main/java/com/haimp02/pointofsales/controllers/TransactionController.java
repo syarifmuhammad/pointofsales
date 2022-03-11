@@ -1,7 +1,6 @@
 package com.haimp02.pointofsales.controllers;
 
 import com.haimp02.pointofsales.models.entities.Transaction;
-import com.haimp02.pointofsales.services.interfaces.ProductService;
 import com.haimp02.pointofsales.services.interfaces.TransactionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import java.util.Date;
 @Controller
 public class TransactionController {
 
-    @Autowired
-    private ProductService productionService;
     @Autowired
     private TransactionService transactionService;
 
@@ -55,7 +52,6 @@ public class TransactionController {
         Transaction newTransaction = transaction;
         transaction.setTransaction_date(new Date());
         transactionService.save(newTransaction);
-        Long id = newTransaction.getId();
 
         return "redirect:/transactions";
     }

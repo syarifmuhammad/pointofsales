@@ -28,7 +28,7 @@
                                 <form method="GET" th:action="@{/categories}">
                                     <label>Search:
                                         <input type="search" th:value="${search}" name="search"
-                                            class="form-control form-control-sm" placeholder="Cari dengan nama category"
+                                            class="form-control form-control-sm" placeholder="Cari category"
                                             aria-controls="dataTable">
                                     </label>
                                 </form>
@@ -62,6 +62,41 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-sm-12 col-md-5">
+                                <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                                    Showing <span
+                                        th:text="${page * 10 + 1} + ' to ' + (${page * 10} + ${element}) + ' of ' +${categories.totalElements}"></span>
+                                    entries</div>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button page-item previous"
+                                            th:classappend="${page}==0 ? disabled" id="dataTable_previous">
+                                            <a th:href="@{/categories} + '?page=' + ${page} + (${search} != null ? '&search=' + ${search} : '')" class="page-link">Previous
+                                            </a>
+                                        </li>
+                                        <li th:each="index : ${#numbers.sequence(1, categories.totalPages)}"
+                                            class="paginate_button page-item"
+                                            th:classappend="${page+1}==${index} ? active ">
+                                            <a th:if="${page+1}!=${index}"
+                                                th:href="@{/categories} + '?page=' + ${index} + (${search} != null ? '&search=' + ${search} : '')"
+                                                class="page-link">
+                                                <th:block th:text="${index}"></th:block>
+                                            </a>
+                                            <a th:if="${page+1}==${index}" class="page-link">
+                                                <th:block th:text="${index}"></th:block>
+                                            </a>
+                                        </li>
+                                        <li class="paginate_button page-item next"
+                                            th:classappend="${page+1}==${categories.totalPages} ? disabled"
+                                            id="dataTable_next">
+                                            <a th:href="@{/categories} + '?page=' + ${page+2} + (${search} != null ? '&search=' + ${search} : '')" class="page-link">Next
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
