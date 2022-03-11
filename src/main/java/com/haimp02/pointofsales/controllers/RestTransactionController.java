@@ -19,12 +19,12 @@ public class RestTransactionController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/products/search")
-    public List<Product> searchProduct(@RequestParam String search) {
-        if (search.isBlank()) {
-            return new ArrayList<Product>();
-        }
-        return productService.findByNameContaining(search);
-        // return theaterService.getMovies();
-    }
+    // @RequestMapping(method = RequestMethod.GET, value = "/products/search")
+    // public List<Product> searchProduct(@RequestParam String search) {
+    //     if (search.isBlank()) {
+    //         return new ArrayList<Product>();
+    //     }
+    //     // return productService.findByNameContaining(search);
+    //     // return theaterService.getMovies();
+    // }
 }

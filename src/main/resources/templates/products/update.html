@@ -17,32 +17,26 @@
                 <form autocomplete="off" method="POST" th:object="${productForm}" th:action="@{/products/update/}+*{id}">
                     <input type="hidden" required th:field="*{id}">
                     <div class="form-group">
-                        <input required type="text" th:field="*{name}" class="form-control" placeholder="Name">
+                        <input required type="text" th:field="*{name}" class="form-control" placeholder="Nama Barang">
                         <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                     </div>
                     <div class="form-group">
-                        <input required type="num" th:field="*{purchase_price}" class="form-control" placeholder="purchase_price">
+                        <input required type="number" th:field="*{purchase_price}" class="form-control" placeholder="Harga Beli">
                         <span class="has-error" th:if="${#fields.hasErrors('purchase_price')}" th:errors="*{purchase_price}"></span>
                     </div>
                     <div class="form-group">
-                        <input required type="num" th:field="*{selling_price}" class="form-control" placeholder="selling_price">
+                        <input required type="number" th:field="*{selling_price}" class="form-control" placeholder="Harga Jual">
                         <span class="has-error" th:if="${#fields.hasErrors('selling_price')}" th:errors="*{selling_price}"></span>
                     </div>
                     <div class="form-group">
-                        <input required type="num" th:field="*{stock}" class="form-control" placeholder="stock">
+                        <input required type="number" th:field="*{stock}" class="form-control" placeholder="Stock">
                         <span class="has-error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
                     </div>
                     <div class="form-group">
-                        <input required type="num" th:field="*{category}" class="form-control" placeholder="category">
-                        <span class="has-error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
-                    </div>
-                    <div class="form-group">
-                        <select th:field="*{category}">
-                            <!-- <option th:each="type : ${categories}" 
-                                    th:value="${type}" 
-                                    th:text="#{${'seedstarter.type.' + type}}">Wireframe</option> -->
-                                    <option value="">category</option>
-                          </select>
+                        <select th:field="*{category.id}" class="form-control">
+                            <option th:each="i : ${categories}" th:value="${i.id}" th:text="${i.name}" th:selected="${i.id} == ${productForm.category.id}">
+                            </option>
+                        </select>
                     </div>
 
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Edit Product</button>

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.haimp02.pointofsales.models.entities.Product;
+import com.haimp02.pointofsales.services.interfaces.CategoryService;
 import com.haimp02.pointofsales.services.interfaces.ProductService;
 
 import org.slf4j.Logger;
@@ -27,26 +28,31 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @GetMapping("/products")
-    public String index(Model model, @RequestParam(required = false) Integer page) {
-        if (page == null) {
-            page = 0;
+    public String index(Model model, @RequestParam(required = false) Integer page, @RequestParam(required=false) String search) {
+        if (page == null || page<1) {
+            page = 1;
         }
-        Page<Product> products = productService.findAll(page);
+        page--;
+        if (search == null) {
+            search = "";
+        } else {
+            model.addAttribute("search", search);
+        }
+        Page<Product> products = productService.findAll(page, search);
         model.addAttribute("products", products);
-        int totalPages = products.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        model.addAttribute("page", page);
+        model.addAttribute("element", products.getContent().size());
         return "products/index";
     }
 
     @GetMapping("/products/create")
     public String create(Model model) {
         model.addAttribute("productForm", new Product());
+        model.addAttribute("categories", categoryService.findAll());
         return "products/create";
     }
 
@@ -63,6 +69,7 @@ public class ProductController {
             return "redirect:/products";
         }
         model.addAttribute("productForm", getProduct);
+        model.addAttribute("categories", categoryService.findAll());
 
         return "products/update";
     }

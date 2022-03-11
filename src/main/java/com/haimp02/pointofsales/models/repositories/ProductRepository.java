@@ -1,15 +1,16 @@
 package com.haimp02.pointofsales.models.repositories;
 
-import java.util.List;
-
 import com.haimp02.pointofsales.models.entities.Product;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 // import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 // import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByNameContaining(String search);
+public interface ProductRepository extends CrudRepository<Product, Long> {
+    Page<Product> findByNameContaining(String search, Pageable page);
     // Page<Product> findByFullnameContaining(String search, Pageable page);
     // void deleteById(Long id);
 }

@@ -1,5 +1,6 @@
 package com.haimp02.pointofsales.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.haimp02.pointofsales.models.entities.Category;
@@ -30,6 +31,11 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public void save(Category category) { 
         categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
 
     @Override

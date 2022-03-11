@@ -3,8 +3,10 @@ package com.haimp02.pointofsales.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.haimp02.pointofsales.models.entities.Category;
 import com.haimp02.pointofsales.models.entities.Product;
 import com.haimp02.pointofsales.models.repositories.ProductRepository;
+import com.haimp02.pointofsales.services.interfaces.CategoryService;
 import com.haimp02.pointofsales.services.interfaces.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
-    public Page<Product> findAll(int page) {
-        Pageable pagination = PageRequest.of(page, 12);
-        return productRepository.findAll(pagination);
+    public Page<Product> findAll(Integer page, String search) {
+        Pageable pagination = PageRequest.of(page, 10);
+        return productRepository.findByNameContaining(search, pagination);
     }
 
     @Override
@@ -34,14 +39,16 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-    @Override
-    public List<Product> findByNameContaining(String search) {
-        List<Product> products = productRepository.findByNameContaining(search);
-        return products;
-    }
+    // @Override
+    // public List<Product> findByNameContaining(String search) {
+    //     List<Product> products = productRepository.findByNameContaining(search);
+    //     return products;
+    // }
 
     @Override
     public void save(Product product) {
+        Category category = categoryService.findById(product.getCategory().getId());
+        product.setCategory(category);
         productRepository.save(product);
     }
 

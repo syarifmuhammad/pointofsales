@@ -28,7 +28,7 @@
                                 <form method="GET" th:action="@{/products}">
                                     <label>Search:
                                         <input type="search" th:value="${search}" name="search"
-                                            class="form-control form-control-sm" placeholder="Cari dengan nama customer"
+                                            class="form-control form-control-sm" placeholder="Cari barang"
                                             aria-controls="dataTable">
                                     </label>
                                 </form>
@@ -49,7 +49,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="product, iStat : ${products.content}" th:style="${iStat.odd}? 'font-weight: bold;'" th:alt-title="${iStat.even}? 'even' : 'odd'">
+                                        <tr th:each="product, iStat : ${products.content}">
                                             <td th:text="${product.id}" />
                                             <td th:text="${product.name}" />
                                             <td th:text="${product.category.name}" />
@@ -70,6 +70,41 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-sm-12 col-md-5">
+                                <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                                    Showing <span
+                                        th:text="${page * 10 + 1} + ' to ' + (${page * 10} + ${element}) + ' of ' +${products.totalElements}"></span>
+                                    entries</div>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button page-item previous"
+                                            th:classappend="${page}==0 ? disabled" id="dataTable_previous">
+                                            <a th:href="@{/products} + '?page=' + ${page} + (${search} != null ? '&search=' + ${search} : '')" class="page-link">Previous
+                                            </a>
+                                        </li>
+                                        <li th:each="index : ${#numbers.sequence(1, products.totalPages)}"
+                                            class="paginate_button page-item"
+                                            th:classappend="${page+1}==${index} ? active ">
+                                            <a th:if="${page+1}!=${index}"
+                                                th:href="@{/products} + '?page=' + ${index} + (${search} != null ? '&search=' + ${search} : '')"
+                                                class="page-link">
+                                                <th:block th:text="${index}"></th:block>
+                                            </a>
+                                            <a th:if="${page+1}==${index}" class="page-link">
+                                                <th:block th:text="${index}"></th:block>
+                                            </a>
+                                        </li>
+                                        <li class="paginate_button page-item next"
+                                            th:classappend="${page+1}==${products.totalPages} ? disabled"
+                                            id="dataTable_next">
+                                            <a th:href="@{/products} + '?page=' + ${page+2} + (${search} != null ? '&search=' + ${search} : '')" class="page-link">Next
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

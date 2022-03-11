@@ -81,14 +81,14 @@
                                     <ul class="pagination">
                                         <li class="paginate_button page-item previous"
                                             th:classappend="${page}==0 ? disabled" id="dataTable_previous">
-                                            <a th:href="@{/users} + '?page=' + ${page}" class="page-link">Previous
+                                            <a th:href="@{/users} + '?page=' + ${page} + (${search} != null ? '&search=' + ${search} : '')" class="page-link">Previous
                                             </a>
                                         </li>
                                         <li th:each="index : ${#numbers.sequence(1, users.totalPages)}"
                                             class="paginate_button page-item"
                                             th:classappend="${page+1}==${index} ? active ">
                                             <a th:if="${page+1}!=${index}"
-                                                th:href="@{/users} + '?page=' + ${index} + (${search} != '' ? '&search=' + ${search} : '')"
+                                                th:href="@{/users} + '?page=' + ${index} + (${search} != null ? '&search=' + ${search} : '')"
                                                 class="page-link">
                                                 <th:block th:text="${index}"></th:block>
                                             </a>
@@ -99,7 +99,7 @@
                                         <li class="paginate_button page-item next"
                                             th:classappend="${page+1}==${users.totalPages} ? disabled"
                                             id="dataTable_next">
-                                            <a th:href="@{/users} + '?page=' + ${page+2}" class="page-link">Next
+                                            <a th:href="@{/users} + '?page=' + ${page+2} + (${search} != null ? '&search=' + ${search} : '')" class="page-link">Next
                                             </a>
                                         </li>
                                     </ul>
