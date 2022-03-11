@@ -46,7 +46,7 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="category, iter : ${categories.content}">
-                                            <td th:text="${category.id}" />
+                                            <td th:text="${(10 * page) + iter.index + 1}" />
                                             <td th:text="${category.name}" />
                                             <td>
                                                 <a th:href="@{/categories/update/}+${category.id}" class="btn btn-info btn-circle">

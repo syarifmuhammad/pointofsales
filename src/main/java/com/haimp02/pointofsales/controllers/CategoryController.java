@@ -36,6 +36,7 @@ public class CategoryController {
         // }
         Page<Category> categories = categoryService.findAll(page);
         model.addAttribute("categories", categories);
+        model.addAttribute("page", page);
         return "categories/index";
     }
 

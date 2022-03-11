@@ -49,8 +49,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="product, iStat : ${products.content}">
-                                            <td th:text="${product.id}" />
+                                        <tr th:each="product, iter : ${products.content}">
+                                            <td th:text="${(10 * page) + iter.index + 1}" />
                                             <td th:text="${product.name}" />
                                             <td th:text="${product.category.name}" />
                                             <td th:text="${product.purchase_price}" />
