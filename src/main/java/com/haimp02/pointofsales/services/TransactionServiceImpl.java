@@ -31,8 +31,16 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-        
+        Optional<Transaction> transaction = transactionRepository.findById(id);
+        if (transaction.isPresent()) {
+            Transaction t = transaction.get();
+            List<TransactionDetail> delete = transactionDetailRepository.findByTransactionId(t.getId());
+            delete.forEach(p -> {
+                transactionDetailRepository.deleteById(p.getId());
+            });
+            transactionRepository.delete(t);
+            customerRepository.delete(t.getCustomer());
+        }
     }
 
     @Override

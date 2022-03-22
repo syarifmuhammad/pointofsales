@@ -81,4 +81,14 @@ public class TransactionController {
 
         return "redirect:/transactions";
     }
+
+    @GetMapping({ "/transactions/delete/{id}" })
+    public String deleteAction(@PathVariable("id") Long id) {
+        Transaction delete = transactionService.findById(id);
+        if (delete != null) {
+            transactionService.deleteById(id);;
+        }
+
+        return "redirect:/transactions";
+    }
 }
