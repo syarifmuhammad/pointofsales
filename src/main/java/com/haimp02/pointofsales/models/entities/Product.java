@@ -32,6 +32,9 @@ public class Product {
 
     @Column(nullable = false)
     private Double selling_price;
+    
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
 
     @ManyToOne()
     @JoinColumn(name="category_id")
@@ -91,5 +94,12 @@ public class Product {
         this.category = category;
     }
 
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
     
 }

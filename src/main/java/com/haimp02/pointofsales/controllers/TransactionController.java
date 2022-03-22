@@ -49,6 +49,9 @@ public class TransactionController {
 
     @PostMapping({ "/transactions/create" })
     public String createAction(Transaction transaction) {
+        if (transaction.getTransaction_details() == null) {
+            return "redirect:/transactions/create" + "?error=transaction_details_missing";
+        }
         Transaction newTransaction = transaction;
         transaction.setTransaction_date(new Date());
         transactionService.save(newTransaction);
@@ -71,8 +74,8 @@ public class TransactionController {
     @PostMapping({ "/transactions/update/{id}" })
     public String updateAction(Transaction transaction) {
         Transaction editTransaction = transactionService.findById(transaction.getId());
-        if (editTransaction == null) {
-            return "redirect:/transactions";
+        if (editTransaction == null || transaction.getTransaction_details() == null) {
+            return "redirect:/transactions/update/" + transaction.getId() + "?error=transaction_details_missing";
         }
         transactionService.update(transaction);
 

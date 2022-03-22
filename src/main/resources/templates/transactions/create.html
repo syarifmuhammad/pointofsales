@@ -135,8 +135,12 @@
             function removeProduct(el) {
                 var elParent = $(el).closest('tr')[0]
                 var index = $("#transaction_details").children().index(elParent)
-                product_added.splice(index, 1)
-                $(elParent).remove()
+                product_added.splice(index-1, 1)
+                var html = ""
+                for(let i=0; i< product_added.length; i++) {
+                    html += getTemplate(i, product_added[i].id, product_added[i].name, 1, product_added[i].selling_price)
+                }
+                $("#transaction_details").html(html)
             }
 
             $(document).ready(function ($) {

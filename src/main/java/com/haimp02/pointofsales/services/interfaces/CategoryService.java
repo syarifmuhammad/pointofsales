@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 
 public interface CategoryService {
     List<Category> findAll();
-    Page<Category> findAll(Integer page);
+    Page<Category> findAll(Integer page, String search);
     void save(Category category);
     Category findById(Long id);
     Boolean isExistsById(Long id);

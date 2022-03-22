@@ -34,7 +34,7 @@ public class CategoryController {
         } else {
             model.addAttribute("search", search);
         }
-        Page<Category> categories = categoryService.findAll(page);
+        Page<Category> categories = categoryService.findAll(page, search);
         model.addAttribute("categories", categories);
         model.addAttribute("page", page);
         model.addAttribute("element", categories.getContent().size());
@@ -74,7 +74,9 @@ public class CategoryController {
     @GetMapping("/categories/delete/{id}")
     public String deleteAction(@PathVariable("id") Long id) {
         if (categoryService.isExistsById(id)) {
-            categoryService.deleteById(id);
+            Category getCategory = categoryService.findById(id);
+            getCategory.setIsDeleted(true);;
+            categoryService.save(getCategory);
             return "redirect:/categories?delete=success";
         }else {
             return "redirect:/categories?delete=error";

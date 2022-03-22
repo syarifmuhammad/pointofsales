@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public void save(Category category) { 
+    public void save(Category category) {
         categoryRepository.save(category);
     }
 
@@ -39,9 +39,9 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public Page<Category> findAll(Integer page) {
+    public Page<Category> findAll(Integer page, String search) {
         Pageable pagination = PageRequest.of(page, 10);
-        return categoryRepository.findAll(pagination);
+        return categoryRepository.findByNameContainingAndIsDeletedFalse(search, pagination);
     }
     
     @Override

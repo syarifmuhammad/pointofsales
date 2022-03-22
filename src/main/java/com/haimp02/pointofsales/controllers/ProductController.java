@@ -79,7 +79,9 @@ public class ProductController {
     @GetMapping("/products/delete/{id}")
     public String deleteAction(@PathVariable("id") Long id) {
         if (productService.isExistsById(id)) {
-            productService.deleteById(id);
+            Product getProduct= productService.findById(id);
+            getProduct.setIsDeleted(true);
+            productService.save(getProduct);
             return "redirect:/products?delete=success";
         }else {
             return "redirect:/products?delete=error";

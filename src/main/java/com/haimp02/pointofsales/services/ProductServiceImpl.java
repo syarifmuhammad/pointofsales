@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findAll(Integer page, String search) {
         Pageable pagination = PageRequest.of(page, 10);
-        return productRepository.findByNameContaining(search, pagination);
+        return productRepository.findByNameContainingAndIsDeletedFalse(search, pagination);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findByNameContaining(String search) {
         Pageable pagination = PageRequest.of(0, 10);
-        return productRepository.findByNameContaining(search, pagination).getContent();
+        return productRepository.findByNameContainingAndIsDeletedFalse(search, pagination).getContent();
     }
 
     @Override

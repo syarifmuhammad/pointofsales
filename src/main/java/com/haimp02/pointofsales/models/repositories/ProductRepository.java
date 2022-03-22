@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
-    Page<Product> findByNameContaining(String search, Pageable page);
+    Page<Product> findByNameContainingAndIsDeletedFalse(String search, Pageable page);
     // Page<Product> findByFullnameContaining(String search, Pageable page);
     // void deleteById(Long id);
 }
