@@ -14,4 +14,5 @@ public interface ProductService {
     void update(Product product);
     Boolean isExistsById(Long id);
     void deleteById(Long id);
+    List<?> getTopTenProducts();
 }

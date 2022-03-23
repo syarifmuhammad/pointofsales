@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,6 +30,42 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Override
+    public Integer getMonthlyEarning() {
+        Optional<Integer> d = transactionRepository.getMonthlyEarning();
+        if (d.isPresent()) {
+            return d.get();
+        }
+        return 0;
+    };
+
+    @Override
+    public Integer getAnnualEarning() {
+        Optional<Integer> d = transactionRepository.getAnnualEarning();
+        if (d.isPresent()) {
+            return d.get();
+        }
+        return 0;
+    };
+
+    @Override
+    public Integer getAnnualSales() {
+        Optional<Integer> d = transactionRepository.getAnnualSales();
+        if (d.isPresent()) {
+            return d.get();
+        }
+        return 0;
+    };
+
+    @Override
+    public ArrayList<Integer> getPerMonthEarning() {
+        ArrayList<Integer> d =  new ArrayList<Integer>();
+        for (Integer i=0; i<12; i++) {
+            d.add(transactionRepository.getPerMonthEarning(i+1));
+        }
+        return d;
+    };
 
     @Override
     public void deleteById(Long id) {

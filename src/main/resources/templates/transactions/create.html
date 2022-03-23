@@ -53,6 +53,14 @@
                                 <tbody id="transaction_details">
 
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td style="vertical-align:middle;"><b>GRANDTOTAL</b></td>
+                                        <td colspan="3" align="right" style="vertical-align:middle;">
+                                            <h4 class="pr-5 m-0 text-success"><b id="grandtotal">Rp 0</b></h4>
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -67,6 +75,14 @@
             var product_added = []
             function toRupiah(x) {
                 return "Rp " + x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+            function setGrandTotal(product) {
+                var sum = 0
+                for (let i = 0; i < product.length; i++) {
+                    sum += product[i].selling_price * product[i].quantity
+                }
+                $("#grandtotal").text(toRupiah(sum))
+
             }
             function setLoading() {
                 var product_search_list = $("#product-search-list")
@@ -122,6 +138,7 @@
                         $("#transaction_details").append(html)
                     }
                 }
+                setGrandTotal(product_added)
             }
 
             function changeQty(el) {
@@ -130,17 +147,19 @@
                 var index = $("#transaction_details").children().index(elParent)
                 product_added[index].quantity = newQty
                 $(elParent).children('td').eq(2).text(toRupiah(newQty * product_added[index].selling_price))
+                setGrandTotal(product_added)
             }
 
             function removeProduct(el) {
                 var elParent = $(el).closest('tr')[0]
                 var index = $("#transaction_details").children().index(elParent)
-                product_added.splice(index-1, 1)
+                product_added.splice(index, 1)
                 var html = ""
                 for(let i=0; i< product_added.length; i++) {
                     html += getTemplate(i, product_added[i].id, product_added[i].name, 1, product_added[i].selling_price)
                 }
                 $("#transaction_details").html(html)
+                setGrandTotal(product_added)
             }
 
             $(document).ready(function ($) {

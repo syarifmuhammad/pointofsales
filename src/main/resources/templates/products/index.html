@@ -53,8 +53,8 @@
                                             <td th:text="${(10 * page) + iter.index + 1}" />
                                             <td th:text="${product.name}" />
                                             <td th:text="${product.category.name}" />
-                                            <td th:text="${product.purchase_price}" />
-                                            <td th:text="${product.selling_price}" />
+                                            <td th:text="${product.purchase_price_string}" />
+                                            <td th:text="${product.selling_price_string}" />
                                             <td th:text="${product.stock}" />
                                             <td>
                                                 <a th:href="@{/products/update/}+${product.id}" class="btn btn-info btn-circle">

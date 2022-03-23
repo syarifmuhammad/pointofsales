@@ -72,5 +72,12 @@ public class ProductServiceImpl implements ProductService {
         // TODO Auto-generated method stub
         productRepository.deleteById(id);        
     }
+
+    @Override
+    public List<?> getTopTenProducts() {
+        return productRepository.getTopTenProducts();
+    }
+
+    
     
 }

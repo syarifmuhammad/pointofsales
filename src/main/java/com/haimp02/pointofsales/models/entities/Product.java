@@ -69,6 +69,11 @@ public class Product {
         return purchase_price;
     }
 
+    public String getPurchase_price_string() {
+        DecimalFormat df = new DecimalFormat("###,###,###");
+        return "Rp " + df.format(this.purchase_price);
+    }
+
     public void setPurchase_price(Double purchase_price) {
         this.purchase_price = purchase_price;
     }

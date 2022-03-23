@@ -7,7 +7,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -23,77 +23,36 @@
                 <div class="container-fluid">
                     <th:block th:replace="${content}">
                 </div>
-                    <!-- Pie Chart -->
-                    <div class="col-xl-4 col-lg-5">
-                        <div class="card shadow mb-4">
-                            <!-- Card Header - Dropdown -->
-                            <div
-                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Dropdown Header:</div>
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <div class="chart-pie pt-4 pb-2">
-                                    <canvas id="myPieChart"></canvas>
-                                </div>
-                                <div class="mt-4 text-center small">
-                                    <span class="mr-2">
-                                        <i class="fas fa-circle text-primary"></i> Direct
-                                    </span>
-                                    <span class="mr-2">
-                                        <i class="fas fa-circle text-success"></i> Social
-                                    </span>
-                                    <span class="mr-2">
-                                        <i class="fas fa-circle text-info"></i> Referral
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+    </div>
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
     <script th:src="@{/js/sb-admin-2.min.js}"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
     <script>
         navigator.geolocation.getCurrentPosition(response => {
-        $.ajax({
-            method: "GET",
-            url: "http://api.weatherapi.com/v1/current.json?key=d4429efc01a043bf95e85713220703&q=" + response.coords.latitude + "," + response.coords.longitude + "&aqi=no"
-        })
-            .done(function (msg) {
-                console.log(msg)
-                $("#weather #city").append(msg.location.name)
-                $("#weather #img").attr('src', msg.current.condition.icon)
-                $("#weather #wrap-info #temp").append(msg.current.temp_c + "&#8451;")
-                $("#weather #wrap-info #cond").append(msg.current.condition.text)
-            });
-        })
-        $.ajax({
+            $.ajax({
                 method: "GET",
-                url: "/users/name"
+                url: "http://api.weatherapi.com/v1/current.json?key=d4429efc01a043bf95e85713220703&q=" + response.coords.latitude + "," + response.coords.longitude + "&aqi=no"
             })
                 .done(function (msg) {
-                    $("#fullName").text(msg)
+                    console.log(msg)
+                    $("#weather #city").append(msg.location.name)
+                    $("#weather #img").attr('src', msg.current.condition.icon)
+                    $("#weather #wrap-info #temp").append(msg.current.temp_c + "&#8451;")
+                    $("#weather #wrap-info #cond").append(msg.current.condition.text)
                 });
+        })
+        $.ajax({
+            method: "GET",
+            url: "/users/name"
+        })
+            .done(function (msg) {
+                $("#fullName").text(msg)
+            });
     </script>
     <th:block th:replace="${js}" />
 </body>

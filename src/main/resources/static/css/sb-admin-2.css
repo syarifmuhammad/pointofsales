@@ -10861,13 +10861,13 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("../img/login.jpg");
+  /* background: url("../img/login.jpeg"); */
   background-position: center;
   background-size: cover;
 }
-
+/* "https://source.unsplash.com/Mv9hjnEUHR4/600x800" */
 .bg-register-image {
-  background: url("https://source.unsplash.com/Mv9hjnEUHR4/600x800");
+  /* background: url("../img/login.jpg"); */
   background-position: center;
   background-size: cover;
 }
